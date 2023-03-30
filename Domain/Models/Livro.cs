@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models
@@ -23,6 +24,8 @@ namespace Domain.Models
         public string? ISBN { get; set; }
         [Required]
         public DateTime Ano { get; set; }
+
+        [JsonIgnore]
         public ICollection<Autor>? Autores { get; set; }
     }
 }

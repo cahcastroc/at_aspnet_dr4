@@ -2,6 +2,7 @@
 using Domain.Mapper;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Service.Services;
 
 namespace Api.Controllers
 {
@@ -17,21 +18,30 @@ namespace Api.Controllers
             _autorService = autorService;
         }
 
-        //// GET: api/<AutorController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        
+        [HttpGet]
+        public IActionResult Lista()
+        {
+            var autores = _autorService.ListaTodos();
+            return Ok(AutorMapper.ConverteListaAutoresParaViewModel(autores));
+        }
 
-        //// GET api/<AutorController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+      
+        [HttpGet("{id}")]
+        public IActionResult BuscaAutorPorId(int id)
+        {
+            try
+            {
+                var autor = _autorService.BuscaAutor(id);
+                return Ok(AutorMapper.ConverteParaAutorViewModel(autor));
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound(new { Message = "Autor não encontrado." });
+            }
+        }
 
-        // POST api/<AutorController>
+    
         [HttpPost]     
         public IActionResult AddAutor([FromBody] AutorViewModel autorViewModel)
         {
@@ -46,17 +56,37 @@ namespace Api.Controllers
            
             return NoContent();
         }
+               
+        [HttpPut("{id}")]
+        public IActionResult EditaAutor(int id, [FromBody] AutorViewModel autorViewModel)
+        {
+            try
+            {
+                var autor = AutorMapper.ConverteParaAutorModel(autorViewModel);
+                _autorService.EditaAutor(id, autor);
 
-        //PUT api/<AutorController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { Message = "Falha ao Editar livro." });
+            }
+        }
 
-        //DELETE api/<AutorController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+     
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _autorService.DeletaAutor(id);
+
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return BadRequest(new { Message = "Falha ao Excluir Autor. Verifique o nº de identificação" });
+            }
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace Domain.Mapper
 
 
 
-        public static ICollection<AutorViewModel> ConverteListaLivrosParaViewModel(ICollection<Autor> autores)
+        public static ICollection<AutorViewModel> ConverteListaAutoresParaViewModel(ICollection<Autor> autores)
         {
             return autores.Select(autor => new AutorViewModel
             {

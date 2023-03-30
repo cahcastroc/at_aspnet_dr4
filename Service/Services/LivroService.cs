@@ -17,7 +17,26 @@ namespace Service.Services
         {
             _appDbContext = appDbContext;
         }
-              
+
+
+        public ICollection<Livro> ListaTodos()
+        {
+            return _appDbContext.Livro.Include(l => l.Autores).ToList();
+        }
+
+        public Livro BuscaLivro(int id)
+        {
+            var livro = _appDbContext.Livro.Include(l => l.Autores).First(l => l.Id == id);
+
+            return livro;
+
+        }
+
+        public void AddLivro(Livro livro)
+        {
+            _appDbContext.Add(livro);
+            _appDbContext.SaveChanges();
+        }
 
 
         public void AddAutorLivro(int idAutor, int idLivro)
@@ -25,7 +44,7 @@ namespace Service.Services
             var livroDb = _appDbContext.Livro.First(p => p.Id == idLivro);
             var autorDb = _appDbContext.Autor.First(c => c.Id == idAutor);
 
-            if(livroDb.Autores.Contains(autorDb))
+            if (livroDb.Autores.Contains(autorDb))
             {
                 throw new DbUpdateException();
             }
@@ -34,37 +53,11 @@ namespace Service.Services
             _appDbContext.SaveChanges();
         }
 
-        public void AddLivro(Livro livro)
-        {           
-                _appDbContext.Add(livro);
-                _appDbContext.SaveChanges();     
-       
-        }
-
-        public Livro BuscaLivro(int id)
-        {
-            var livro = _appDbContext.Livro.Include(l => l.Autores).First(l => l.Id == id);
-          
-            return livro;           
-           
-        }
-
-        public void DeletaLivro(int id)
-        {
-           var livro = _appDbContext.Livro.First(l => l.Id == id);
-           if (livro == null) 
-            {
-                throw new Exception();
-            }
-            _appDbContext.Remove(livro);
-            _appDbContext.SaveChanges();
-        }
-
         public void EditaLivro(int id, Livro livro)
         {
             var livroAtual = _appDbContext.Livro.First(l => l.Id == id);
 
-            if (livroAtual == null) 
+            if (livroAtual == null)
             {
                 throw new Exception();
             }
@@ -74,11 +67,18 @@ namespace Service.Services
 
             _appDbContext.SaveChanges();
         }
-      
 
-        public ICollection<Livro> ListaTodos()
+        public void DeletaLivro(int id)
         {
-          return _appDbContext.Livro.Include(l => l.Autores).ToList() ;
+            var livro = _appDbContext.Livro.First(l => l.Id == id);
+            if (livro == null)
+            {
+                throw new Exception();
+            }
+            _appDbContext.Remove(livro);
+            _appDbContext.SaveChanges();
         }
+
+
     }
 }

@@ -12,7 +12,7 @@ namespace Domain.Interfaces
         ICollection<Autor> ListaTodos();
         Autor BuscaAutor(int id);
         void AddAutor(Autor autor);
-        void EditaAutor(Autor autor);
+        void EditaAutor(int id, Autor autor);
         void DeletaAutor(int id);
       
 
