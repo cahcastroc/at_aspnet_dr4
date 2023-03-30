@@ -19,29 +19,29 @@ namespace Mvc.Controllers
         public async Task<IActionResult> Registro(FuncionarioViewModel funcionarioViewModel)
         {
 
-            using (var httpClient = new HttpClient()) 
+            using var httpClient = new HttpClient();
+
+            try {
+                using var response = await httpClient.PostAsJsonAsync("https://localhost:5001/registro", funcionarioViewModel);
+                response.EnsureSuccessStatusCode();
+                return RedirectToAction("Login", "Funcionario");
+            }
+            catch (HttpRequestException ex)
             {
-                using (var response = await httpClient.PostAsJsonAsync("https://localhost:5001/registro", funcionarioViewModel)) {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Login", "Funcionario");
-                    }
-                    if (response.StatusCode == HttpStatusCode.UnprocessableEntity)
-                    {
-                        ViewBag.Erro = "Funcionário já cadastrado";
-                        return View(funcionarioViewModel);
-                    }
-                    else
-                    {
-                        var error = await response.Content.ReadAsStringAsync();
-                        ModelState.AddModelError("", error);
-                        ViewBag.Erro = "Erro ao realizar o cadastro. Verifique os dados inseridos e tente novamente";
-                        return View(funcionarioViewModel);
-                    }
+                var statusCode = ex.StatusCode;
+
+                if (statusCode == HttpStatusCode.UnprocessableEntity)
+                {
+                    ViewBag.Erro = "Funcionário já cadastrado";
+                    return View(funcionarioViewModel);
                 }
-            }         
-         
-            
+                else 
+                {
+                    ViewBag.Erro = "Erro ao realizar o cadastro. Verifique os dados inseridos e tente novamente";
+                    return View(funcionarioViewModel);
+                }                
+            }          
+
         }
 
 
@@ -50,30 +50,31 @@ namespace Mvc.Controllers
         public async Task<IActionResult> Login(FuncionarioViewModel funcionarioViewModel)
         {
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            try
             {
-                using (var response = await httpClient.PostAsJsonAsync("https://localhost:5001/login", funcionarioViewModel))
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var token = await response.Content.ReadAsStringAsync();
-                        HttpContext.Session.SetString("JwtToken", token);
+                using var response = await httpClient.PostAsJsonAsync("https://localhost:5001/login", funcionarioViewModel);
 
-                        return RedirectToAction("Index", "Home");
-                    }
-                    if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        ViewBag.Erro = "Usuário ou senha inválidos";
-                        return View(funcionarioViewModel);
-                    }
-                    else
-                    {
-                        string errorMessage = await response.Content.ReadAsStringAsync();
-                        ModelState.AddModelError("", errorMessage);
-                        ViewBag.Erro = "Erro ao realizar o login. Verifique os dados inseridos e tente novamente";
-                        return View(funcionarioViewModel);
-                    }
+                response.EnsureSuccessStatusCode();
+
+                var token = await response.Content.ReadAsStringAsync();
+                HttpContext.Session.SetString("JwtToken", token);
+
+                return RedirectToAction("Index", "Home");
+
+
+            }
+            catch (HttpRequestException ex)
+            {
+
+                var statusCode = ex.StatusCode;
+
+                if (statusCode == HttpStatusCode.NotFound || statusCode == HttpStatusCode.BadRequest)
+                {
+                    ViewBag.Erro = "Usuário ou senha inválidos";
+                    return View(funcionarioViewModel);
                 }
+                return View();
             }
 
 
