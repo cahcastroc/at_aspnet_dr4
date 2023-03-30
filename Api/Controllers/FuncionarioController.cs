@@ -1,5 +1,5 @@
-﻿using Domain;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
+using Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -33,15 +33,23 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("/registro")]
-        public IActionResult Post([FromBody] FuncionarioViewModel funcionario)
+        public IActionResult Post([FromBody] FuncionarioViewModel funcionarioViewModel)
         {
-            _funcionarioService.AddFuncionario(funcionario.Email, MaskPassword(funcionario.Senha), funcionario.Nome, funcionario.Role);
+            var funcionario = _funcionarioService.BuscaFuncionario(funcionarioViewModel.Email);
+            Console.WriteLine(funcionario);
+            if (funcionario != null)
+            {               
+                return UnprocessableEntity(new { Message = "Funcionário já cadastrado" });
+            }
+
+
+            _funcionarioService.AddFuncionario(funcionarioViewModel.Email, MaskPassword(funcionarioViewModel.Senha), funcionarioViewModel.Nome, funcionarioViewModel.Role);
             return Ok(new { Message = "Registro realizado com sucesso" });
         }
 
 
         [HttpPost]
-        [Route("/user/login")]
+        [Route("/login")]
         public IActionResult Login([FromBody] FuncionarioViewModel funcionarioViewModel)
         {
             var funcionario = _funcionarioService.BuscaFuncionario(funcionarioViewModel.Email);
