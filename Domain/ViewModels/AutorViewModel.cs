@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class Autor
+    public class AutorViewModel
     {
-
-        public int Id { get; set; }
         [MaxLength(250)]
         [Required]
         public string? Nome { get; set; }
@@ -22,8 +20,7 @@ namespace Domain.Models
         [Required]
         public string? Email { get; set; }
         public DateTime DataNascimento { get; set; }
-
-        [JsonIgnore]
         public ICollection<Livro>? Livros { get; set; }
     }
 }
+

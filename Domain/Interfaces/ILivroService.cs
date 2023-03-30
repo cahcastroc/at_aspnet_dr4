@@ -12,8 +12,8 @@ namespace Domain.Interfaces
         ICollection<Livro> ListaTodos();
         Livro BuscaLivro(int id);
         void AddLivro(Livro livro);
-        void EditaLivro(Livro livro);
+        void EditaLivro(int id, Livro livro);
         void DeletaLivro(int id);
-        void AddAutor(int idLivro, int idAutor);
+        void AddAutorLivro(int idAutor, int idLivro);
     }
 }

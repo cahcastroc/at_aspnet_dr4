@@ -1,27 +1,23 @@
-﻿using System;
+﻿using Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class Livro
+    public class LivroViewModel
     {
-
-        public Livro() {
-            Autores = new List<Autor>();
-        
-        }
-        public int Id { get; set; }
         [MaxLength(250)]
-        [Required]
+        [Required(ErrorMessage = "O preenchimento do título do livro é obrigatório.")]
         public string? Titulo { get; set; }
         [MaxLength(250)]
-        [Required]
+        [Required(ErrorMessage = "O preenchimento do ISBN do livro é obrigatório.")]
         public string? ISBN { get; set; }
-        [Required]
+        
+        [Required(ErrorMessage = "O preenchimento do ano do livro é obrigatório.")]
         public DateTime Ano { get; set; }
         public ICollection<Autor>? Autores { get; set; }
     }

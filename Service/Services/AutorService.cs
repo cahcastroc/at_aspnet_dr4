@@ -10,9 +10,16 @@ namespace Service.Services
 {
     public class AutorService : IAutorService
     {
+        private readonly AppDbContext _appDbContext;
+
+        public AutorService(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
         public void AddAutor(Autor autor)
         {
-            throw new NotImplementedException();
+            _appDbContext.Add(autor);
+            _appDbContext.SaveChanges();
         }
 
         public Autor BuscaAutor(int id)
