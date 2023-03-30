@@ -2,6 +2,7 @@
 using Domain.Mapper;
 using Domain.Models;
 using Domain.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service.Services;
@@ -21,7 +22,7 @@ namespace Api.Controllers
             _livroService = livroService;
         }
 
-
+        //[Authorize]
         [HttpGet]
         public IActionResult Lista()
         {

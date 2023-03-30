@@ -62,8 +62,8 @@ namespace Service.Services
             }
             _appDbContext.Remove(autor);
             _appDbContext.SaveChanges();
-        }      
+        }
 
-       
+
     }
 }

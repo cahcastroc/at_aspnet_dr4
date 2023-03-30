@@ -1,0 +1,17 @@
+﻿<form method="post" action="/Livro/Add">
+    @Html.AntiForgeryToken()
+
+    <label for="Nome">Título</label>
+    <input type="text" class="form-control" placeholder="Titulo" name="Titulo" required>
+    <label for="ISBN">ISBN</label>
+    <input type="text" class="form-control" placeholder="ISBN" name="ISBN" required>
+    <label for="Ano">Data de Publicação</label>
+    <input type="date" class="form-control" min="1900-01-01" max=@DateTime.Now.Year-@DateTime.Now.Month-@DateTime.Now.Day name="Ano" required>
+    <br />
+    <input type="submit" value="Salvar" class="btn btn-outline-success" />
+
+    <button type="button" class="btn btn-outline-info">
+        @Html.ActionLink("Livro", "Index")
+    </button>
+
+</form>

@@ -1,0 +1,79 @@
+﻿@model ICollection<Domain.ViewModels.LivroViewModel>
+
+@if (ViewBag.Erro != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Erro
+    </div>
+}
+
+<h2 class="text-center"> Lista de livros cadastrados</h2>
+<hr />
+<br />
+<div class="text-center">
+
+    <button type="button" class="btn btn-outline-info btn-lg">
+        @Html.ActionLink("Adicionar novo livro", "Add");
+    </button>
+
+</div>
+
+<br />
+
+<table class="table table-bordered">
+
+    <thead class="text-center">
+
+        <tr>
+            <td><strong>Título</strong></td>
+            <td><strong>ISBN</strong></td>
+            <td><strong>Ano</strong></td>
+            <td><strong>Autores</strong></td>
+
+        </tr>
+    </thead>
+    <tbody class="text-center">
+
+
+        @foreach (var livro in Model)
+        {
+            <tr>
+                <td>
+                    @livro.Titulo
+                </td>
+                <td>
+                    @livro.ISBN
+                </td>
+                <td>
+                    @livro.Ano.Year.ToString("0000")
+                </td>
+                <td>
+                    @Html.ActionLink("Add autor", "Add", "Autor", new { Id = livro.Id })
+                    <br />
+                    <br />
+                    @foreach (var autor in @livro.Autores)
+                    {
+                        <ul>
+                            @autor.Nome @autor.Sobrenome
+                        </ul>
+                    }
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-outline-info">
+
+                        @Html.ActionLink("Editar", "Editar", new { Id = livro.Id })
+                    </button>
+                    <button type="button" class="btn btn-outline-success">
+
+                        @Html.ActionLink("Detalhes", "Detalhes", new { Id = livro.Id })
+                    </button>
+                    <button type="button" class="btn btn-outline-danger">
+
+                        @Html.ActionLink("Deletar", "Deletar", new { Id = livro.Id })
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

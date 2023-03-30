@@ -14,6 +14,7 @@ namespace Domain.Mapper
         {
             return new LivroViewModel()
             {
+                Id = livro.Id,
                 Titulo = livro.Titulo,
                 ISBN = livro.ISBN,
                 Ano = livro.Ano,
@@ -26,6 +27,7 @@ namespace Domain.Mapper
         {
             return new Livro()
             {
+                Id = livroViewModel.Id,
                 Titulo = livroViewModel.Titulo,
                 ISBN = livroViewModel.ISBN,
                 Ano = livroViewModel.Ano,
@@ -38,6 +40,7 @@ namespace Domain.Mapper
         {
             return livros.Select(livro => new LivroViewModel
             {
+                Id= livro.Id,
                 Titulo = livro.Titulo,
                 Ano = livro.Ano,
                 ISBN = livro.ISBN,

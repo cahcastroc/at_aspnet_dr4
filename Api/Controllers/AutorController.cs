@@ -18,7 +18,7 @@ namespace Api.Controllers
             _autorService = autorService;
         }
 
-        
+
         [HttpGet]
         public IActionResult Lista()
         {
@@ -26,7 +26,7 @@ namespace Api.Controllers
             return Ok(AutorMapper.ConverteListaAutoresParaViewModel(autores));
         }
 
-      
+
         [HttpGet("{id}")]
         public IActionResult BuscaAutorPorId(int id)
         {
@@ -41,8 +41,8 @@ namespace Api.Controllers
             }
         }
 
-    
-        [HttpPost]     
+
+        [HttpPost]
         public IActionResult AddAutor([FromBody] AutorViewModel autorViewModel)
         {
 
@@ -53,10 +53,10 @@ namespace Api.Controllers
 
             var autorModel = AutorMapper.ConverteParaAutorModel(autorViewModel);
             _autorService.AddAutor(autorModel);
-           
+
             return NoContent();
         }
-               
+
         [HttpPut("{id}")]
         public IActionResult EditaAutor(int id, [FromBody] AutorViewModel autorViewModel)
         {
@@ -73,7 +73,7 @@ namespace Api.Controllers
             }
         }
 
-     
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

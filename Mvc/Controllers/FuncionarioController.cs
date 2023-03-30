@@ -60,7 +60,7 @@ namespace Mvc.Controllers
                 var token = await response.Content.ReadAsStringAsync();
                 HttpContext.Session.SetString("JwtToken", token);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Livro");
 
 
             }

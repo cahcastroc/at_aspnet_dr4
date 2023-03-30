@@ -10,6 +10,7 @@ namespace Domain.ViewModels
 {
     public class LivroViewModel
     {
+        public int Id { get; set; }
         [MaxLength(250)]
         [Required(ErrorMessage = "O preenchimento do título do livro é obrigatório.")]
         public string? Titulo { get; set; }
