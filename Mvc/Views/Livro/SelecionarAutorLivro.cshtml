@@ -1,0 +1,35 @@
+﻿@if (ViewBag.Erro != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Erro
+    </div>
+}
+
+<div class="text-center">
+    <h3 class="text-center">Vincular autor ao livro</h3>
+    <hr />
+    @Html.ActionLink("Cadastrar novo autor", "Add", "Autor")
+    <br />
+    @using (Html.BeginForm("VincularAutor", "Livro", FormMethod.Post))
+    {
+
+        @Html.AntiForgeryToken()
+
+        <br />
+        <br />
+        <div class="form-group">
+            @Html.Label("Autores cadastrados:")
+            @Html.DropDownList("AutorId", ViewBag.Autores as SelectList, "-- Selecione um autor --", new { @class = "form-control" })
+        </div>
+
+        <input type="hidden" name="livroId" value="@ViewBag.LivroId" />
+        <br />
+
+        <button type="submit" class="btn btn-outline-info">Vincular</button>
+
+    }
+
+
+
+    <a href="@Url.Action("ListarLivros", "Livro")">Voltar para lista de livros</a>
+</div>

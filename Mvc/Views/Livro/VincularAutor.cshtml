@@ -1,0 +1,22 @@
+﻿<div class="text-center">
+    @if (ViewBag.Erro != null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Erro
+        </div>
+        <div>
+            <img src="https://img.freepik.com/vetores-gratis/ilustracao-do-conceito-de-aviso_114360-1551.jpg" />
+        </div>
+    }
+
+    <button type="button" class="btn btn-outline-info">
+
+        @Html.ActionLink("Voltar para lista de livros", "Index")
+    </button>
+    <button type="button" class="btn btn-outline-info">
+
+        @Html.ActionLink("Visualizar lista de autores", "Index", "Autor")
+    </button>
+
+</div>

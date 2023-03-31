@@ -63,13 +63,19 @@ namespace Api.Controllers
 
         }
 
-        [Route("/livros/autores")]
+        [Route("/livros/autores/{livroId}")]
         [HttpPost]
-        public IActionResult AddAutores(int autorId, int livroId)
-        {
+        public IActionResult AddAutores([FromBody]string autorId, int livroId)
+        {                       
+
+            if (!int.TryParse(autorId, out int autorIdInt))
+            {
+                return BadRequest("Id do autor ou do livro inválido.");
+            }
+
             try
             {
-                _livroService.AddAutorLivro(autorId, livroId);
+                _livroService.AddAutorLivro(autorIdInt, livroId);
                 return Ok();
             }
             catch (DbUpdateException)

@@ -48,7 +48,7 @@
                     @livro.Ano.Year.ToString("0000")
                 </td>
                 <td>
-                    @Html.ActionLink("Add autor", "AddAutorLivro",  new { Id = livro.Id })
+                    @Html.ActionLink("Add autor", "SelecionarAutorLivro",  new { Id = livro.Id })
                     <br />
                     <br />
                     @foreach (var autor in @livro.Autores)

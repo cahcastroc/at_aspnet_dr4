@@ -9,6 +9,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
+using System;
 
 namespace Mvc.Controllers
 {
@@ -211,104 +212,87 @@ namespace Mvc.Controllers
             }
         }
 
-        //public IActionResult AutoresLivro(int id)
-        //{
+        public async Task<IActionResult> SelecionarAutorLivro(int id)
+        {
 
-        //    ViewBag.Id = id;
-        //    //if (Request.Method == "POST")
-        //    //{
-        //    //    return RedirectToAction("AutoresLivro", new { id });
-        //    //}
-        //    return View();
-        //}
+            var jwtToken = HttpContext.Session.GetString("JwtToken");
 
+            using var httpClient = new HttpClient();
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AddAutorLivro(int idAutor, int idLivro)
-        //{
-        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
-        //    using var httpClient = new HttpClient();
+            try
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+                using var response = await httpClient.GetAsync("https://localhost:5001/autores");
+                response.EnsureSuccessStatusCode();
+                var apiResponse = await response.Content.ReadAsStringAsync();
 
-        //    var values = new Dictionary<string, string>
-        //        {
-        //            { "idAutor", "1" },
-        //            { "idLivro", "4" }
-        //        };
-
-        //    var content = new FormUrlEncodedContent(values);
-
-        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-        //    using var response = await httpClient.PostAsync("https://localhost:5001/autores",content);
-        //    response.EnsureSuccessStatusCode();
-        //    var apiResponse = await response.Content.ReadAsStringAsync();
-
-        //    var autores = JsonConvert.DeserializeObject<List<LivroViewModel>>(apiResponse);
-        //    var selectListAutores = new SelectList(autores, "Id", "Nome");
-        //    ViewBag.Autores = selectListAutores;
-
-        //    return View();
-
-        //}
+                var autores = JsonConvert.DeserializeObject<List<AutorViewModel>>(apiResponse);
 
 
-        //private async Task<List<AutorViewModel>> AutoresLista()
-        //{
-        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
+                ViewBag.Autores = new SelectList(autores, "Id", "Nome");
 
-        //    using var httpClient = new HttpClient();
-        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-        //    using var response = await httpClient.GetAsync("https://localhost:5001/autores");
-        //    response.EnsureSuccessStatusCode();
-        //    var apiResponse = await response.Content.ReadAsStringAsync();
+                ViewBag.LivroId = id;
 
-        //    var autores = JsonConvert.DeserializeObject<List<AutorViewModel>>(apiResponse);
+                return View();
+            }
+            catch (HttpRequestException ex)
+            {
+                var statusCode = ex.StatusCode;
 
-        //    return autores;
-
-        //}
-
-
-
-
-        //public IActionResult AddAutorLivro(int idLivro)
-        //{
-        //    var autores = AutoresLista();
-        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
-
-        //    using var httpClient = new HttpClient();
+                if (statusCode == HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("NaoAutorizado", "Home");
+                }
+                else
+                {
+                    ViewBag.Erro = "Erro ao exibir lista de autores";
+                    return View();
+                }
+            }
+        }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VincularAutor(string autorId, int livroId)
+        {
 
-        //    // Criar um SelectList para ser utilizado na view
-        //    var selectListAutores = new SelectList((System.Collections.IEnumerable)autores, "Id", "Nome");
 
-        //    // Adicionar o SelectList na ViewBag para ser utilizado na view
-        //    ViewBag.Autores = selectListAutores;
+            var jwtToken = HttpContext.Session.GetString("JwtToken");
 
-        //    // Criar e retornar a view correspondente
-        //    return View();
-        //}
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AddAutorLivro(int idAutor, int idLivro)
-        //{
-        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
-        //    using var httpClient = new HttpClient();
+            using var httpClient = new HttpClient();
 
-        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-        //    using var response = await httpClient.PostAsync("https://localhost:5001/autores");
-        //    response.EnsureSuccessStatusCode();
-        //    var apiResponse = await response.Content.ReadAsStringAsync();
+            try
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+                StringContent content = new StringContent($"\"{autorId}\"", Encoding.UTF8, "application/json");
 
-        //    var autores = JsonConvert.DeserializeObject<List<LivroViewModel>>(apiResponse);
-        //    var selectListAutores = new SelectList(autores, "Id", "Nome");
-        //    ViewBag.Autores = selectListAutores;
+                using var response = await httpClient.PostAsync($"https://localhost:5001/livros/autores/{livroId}", content);
+                response.EnsureSuccessStatusCode();
 
-        //    return View();
+                return RedirectToAction("Index", "Livro");
+            }
+            catch (HttpRequestException ex)
+            {
+                var statusCode = ex.StatusCode;
 
-        //}
+                if (statusCode == HttpStatusCode.Unauthorized)
+                {
+                    return RedirectToAction("NaoAutorizado", "Home");
+                }
 
+                if (statusCode == HttpStatusCode.UnprocessableEntity) 
+                {
+                    ViewBag.Erro = "Autor já cadastrado no livro informado";
+                    return View();
+                }                
+                else
+                {
+                    ViewBag.Erro = "Erro ao vincular autor";
+                    return View();
+                }
+            }
+        }
     }
 }
