@@ -14,6 +14,7 @@ namespace Domain.Mapper
         {
             return new AutorViewModel()
             {
+                Id = autor.Id,
                 Nome = autor.Nome,
                 Sobrenome = autor.Sobrenome,
                 Email = autor.Sobrenome,
@@ -26,6 +27,7 @@ namespace Domain.Mapper
         {
             return new Autor()
             {
+                Id = autorViewModel.Id,
                 Nome = autorViewModel.Nome,
                 Sobrenome = autorViewModel.Sobrenome,
                 Email = autorViewModel.Sobrenome,
@@ -41,6 +43,7 @@ namespace Domain.Mapper
         {
             return autores.Select(autor => new AutorViewModel
             {
+                Id = autor.Id,
                 Nome = autor.Nome,
                 Sobrenome = autor.Sobrenome,
                 Email = autor.Sobrenome,

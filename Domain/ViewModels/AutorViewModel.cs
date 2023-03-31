@@ -10,6 +10,7 @@ namespace Domain.ViewModels
 {
     public class AutorViewModel
     {
+        public int Id { get; set; }
         [MaxLength(250)]
         [Required]
         public string? Nome { get; set; }

@@ -6,6 +6,9 @@ using System.Net;
 using Domain.ViewModels;
 using System.Text;
 using Domain.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace Mvc.Controllers
 {
@@ -203,11 +206,109 @@ namespace Mvc.Controllers
                 }
                 else
                 {
-                    ViewBag.Erro = "Erro ao deletar livro";
-                    return View();
+                    return BadRequest();
                 }
             }
         }
 
-            }
+        //public IActionResult AutoresLivro(int id)
+        //{
+
+        //    ViewBag.Id = id;
+        //    //if (Request.Method == "POST")
+        //    //{
+        //    //    return RedirectToAction("AutoresLivro", new { id });
+        //    //}
+        //    return View();
+        //}
+
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddAutorLivro(int idAutor, int idLivro)
+        //{
+        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
+        //    using var httpClient = new HttpClient();
+
+        //    var values = new Dictionary<string, string>
+        //        {
+        //            { "idAutor", "1" },
+        //            { "idLivro", "4" }
+        //        };
+
+        //    var content = new FormUrlEncodedContent(values);
+
+        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        //    using var response = await httpClient.PostAsync("https://localhost:5001/autores",content);
+        //    response.EnsureSuccessStatusCode();
+        //    var apiResponse = await response.Content.ReadAsStringAsync();
+
+        //    var autores = JsonConvert.DeserializeObject<List<LivroViewModel>>(apiResponse);
+        //    var selectListAutores = new SelectList(autores, "Id", "Nome");
+        //    ViewBag.Autores = selectListAutores;
+
+        //    return View();
+
+        //}
+
+
+        //private async Task<List<AutorViewModel>> AutoresLista()
+        //{
+        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
+
+        //    using var httpClient = new HttpClient();
+        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        //    using var response = await httpClient.GetAsync("https://localhost:5001/autores");
+        //    response.EnsureSuccessStatusCode();
+        //    var apiResponse = await response.Content.ReadAsStringAsync();
+
+        //    var autores = JsonConvert.DeserializeObject<List<AutorViewModel>>(apiResponse);
+
+        //    return autores;
+
+        //}
+
+
+
+
+        //public IActionResult AddAutorLivro(int idLivro)
+        //{
+        //    var autores = AutoresLista();
+        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
+
+        //    using var httpClient = new HttpClient();
+
+
+
+        //    // Criar um SelectList para ser utilizado na view
+        //    var selectListAutores = new SelectList((System.Collections.IEnumerable)autores, "Id", "Nome");
+
+        //    // Adicionar o SelectList na ViewBag para ser utilizado na view
+        //    ViewBag.Autores = selectListAutores;
+
+        //    // Criar e retornar a view correspondente
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddAutorLivro(int idAutor, int idLivro)
+        //{
+        //    var jwtToken = HttpContext.Session.GetString("JwtToken");
+        //    using var httpClient = new HttpClient();
+
+        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        //    using var response = await httpClient.PostAsync("https://localhost:5001/autores");
+        //    response.EnsureSuccessStatusCode();
+        //    var apiResponse = await response.Content.ReadAsStringAsync();
+
+        //    var autores = JsonConvert.DeserializeObject<List<LivroViewModel>>(apiResponse);
+        //    var selectListAutores = new SelectList(autores, "Id", "Nome");
+        //    ViewBag.Autores = selectListAutores;
+
+        //    return View();
+
+        //}
+
+    }
 }

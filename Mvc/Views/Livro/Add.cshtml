@@ -1,7 +1,7 @@
 ﻿<form method="post" action="/Livro/Add">
     @Html.AntiForgeryToken()
 
-    <label for="Nome">Título</label>
+    <label for="Titulo">Título</label>
     <input type="text" class="form-control" placeholder="Titulo" name="Titulo" required>
     <label for="ISBN">ISBN</label>
     <input type="text" class="form-control" placeholder="ISBN" name="ISBN" required>
@@ -11,7 +11,7 @@
     <input type="submit" value="Salvar" class="btn btn-outline-success" />
 
     <button type="button" class="btn btn-outline-info">
-        @Html.ActionLink("Livro", "Index")
+        @Html.ActionLink("Cancelar", "Index")
     </button>
 
 </form>

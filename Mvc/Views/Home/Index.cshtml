@@ -1,8 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Gerenciador de livraria";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Gerenciador de livraria</h1>
+    <div>
+        <button class="btn btn-outline-primary">
+            @Html.ActionLink("Login", "Login", "Funcionario")
+        </button>
+
+        <button class="btn btn-outline-primary">
+            @Html.ActionLink("Registro de funcionário", "Registro", "Funcionario")
+        </button>
+
+    </div>
+    <img src="https://img.freepik.com/vetores-gratis/pequenas-pessoas-focadas-lendo-livros_74855-5836.jpg" />
+
 </div>
