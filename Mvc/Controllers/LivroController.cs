@@ -205,6 +205,10 @@ namespace Mvc.Controllers
                 {
                     return RedirectToAction("NaoAutorizado", "Home");
                 }
+                if (statusCode == HttpStatusCode.Forbidden)
+                {
+                    return RedirectToAction("Forbidden", "Home");
+                }
                 else
                 {
                     return BadRequest();

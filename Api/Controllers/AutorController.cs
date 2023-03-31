@@ -1,12 +1,13 @@
 ﻿using Domain.Interfaces;
 using Domain.Mapper;
 using Domain.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Services;
 
 namespace Api.Controllers
 {
-    [Route("/autores")]
+    [Route("/autores")] 
     [ApiController]
     public class AutorController : ControllerBase
     {
@@ -18,7 +19,7 @@ namespace Api.Controllers
             _autorService = autorService;
         }
 
-
+        [Authorize]
         [HttpGet]
         public IActionResult Lista()
         {
@@ -26,7 +27,7 @@ namespace Api.Controllers
             return Ok(AutorMapper.ConverteListaAutoresParaViewModel(autores));
         }
 
-
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult BuscaAutorPorId(int id)
         {
@@ -41,7 +42,7 @@ namespace Api.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPost]
         public IActionResult AddAutor([FromBody] AutorViewModel autorViewModel)
         {
@@ -56,7 +57,7 @@ namespace Api.Controllers
 
             return NoContent();
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult EditaAutor(int id, [FromBody] AutorViewModel autorViewModel)
         {
@@ -73,7 +74,7 @@ namespace Api.Controllers
             }
         }
 
-
+        [Authorize (Roles = ("ADM"))]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

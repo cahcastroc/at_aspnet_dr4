@@ -11,6 +11,7 @@ using Service.Services;
 
 namespace Api.Controllers
 {
+  
     [Route("/livros")]
     [ApiController]
     public class LivroController : ControllerBase
@@ -22,7 +23,7 @@ namespace Api.Controllers
             _livroService = livroService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public IActionResult Lista()
         {
@@ -32,7 +33,7 @@ namespace Api.Controllers
 
         }
 
-
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult BuscaLivroPorId(int id)
         {
@@ -48,6 +49,7 @@ namespace Api.Controllers
 
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddLivro([FromBody] LivroViewModel livroViewModel)
         {
@@ -63,6 +65,7 @@ namespace Api.Controllers
 
         }
 
+        [Authorize]
         [Route("/livros/autores/{livroId}")]
         [HttpPost]
         public IActionResult AddAutores([FromBody]string autorId, int livroId)
@@ -85,6 +88,7 @@ namespace Api.Controllers
 
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult EditaLivro(int id, [FromBody] LivroViewModel livroViewModel)
         {
@@ -102,7 +106,7 @@ namespace Api.Controllers
 
         }
 
-
+        [Authorize(Roles = ("ADM"))]
         [HttpDelete("{id}")]
         public IActionResult DeletaLivro(int id)
         {

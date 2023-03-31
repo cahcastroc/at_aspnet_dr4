@@ -31,4 +31,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.UseExceptionHandler("/Home/Error"); //Página genérica de erro - Exception handler
 app.Run();

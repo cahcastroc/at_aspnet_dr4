@@ -37,5 +37,10 @@ namespace Mvc.Controllers
         {
             return View();
         }
+
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
     }
 }

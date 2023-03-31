@@ -79,5 +79,14 @@ namespace Mvc.Controllers
 
 
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("JwtToken");         
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+
+        }
+
     }
 }

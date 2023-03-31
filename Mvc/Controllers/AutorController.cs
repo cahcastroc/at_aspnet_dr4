@@ -193,9 +193,14 @@ namespace Mvc.Controllers
             {
                 var statusCode = ex.StatusCode;
 
+                
                 if (statusCode == HttpStatusCode.Unauthorized)
                 {
                     return RedirectToAction("NaoAutorizado", "Home");
+                }
+                if (statusCode == HttpStatusCode.Forbidden)
+                {
+                    return RedirectToAction("Forbidden", "Home");
                 }
                 else
                 {
